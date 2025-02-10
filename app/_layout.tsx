@@ -12,7 +12,9 @@ declare module "@tamagui/core" {
 export default function RootLayout() {
   return (
     <TamaguiProvider config={config}>
-      <Stack />
+      <Stack>
+        <Stack.Screen name="app" options={{ headerShown: false }} />
+      </Stack>
     </TamaguiProvider>
   );
 }
