@@ -1,5 +1,7 @@
 import { HomeScreen } from "@/screen/HomeScreen";
 
-export default function Index() {
+const Index = () => {
   return <HomeScreen />;
-}
+};
+
+export default Index;
