@@ -49,7 +49,7 @@ const HomeScreen = ({
                 >
                   {({ open }: { open: boolean }) => (
                     <>
-                      <Paragraph>{category}</Paragraph>
+                      <Paragraph>{index + 1}.  {category}</Paragraph>
                       <Square
                         animation="quick"
                         rotate={open ? "180deg" : "0deg"}
