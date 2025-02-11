@@ -5,7 +5,7 @@ const api = {
     const url = "https://v2.jokeapi.dev/categories";
     try {
       const response = await axios.get(url);
-      return response.data;
+      return response.data.category;
     } catch (error) {
       console.error("Error fetching jokes", error);
     }

@@ -2,17 +2,17 @@ import { useQuery } from "@tanstack/react-query";
 import api from "./api";
 
 const apiQuery = {
-  fetchJokes() {
+  fetchJokesCategory() {
     const {
-      data: jokes,
-      isFetching: isFetchingJokes,
-      isSuccess: jokesFetched,
-      error: errorFetching,
+      data: jokesCategory,
+      isFetching: isFetchingJokesCategory ,
+      isSuccess: jokesCategoryFetched,
+      error: errorFetchingCategory,
     } = useQuery({
       queryFn: api.getJokesCategory,
       queryKey: ["jokes"],
     });
-    return { jokes, isFetchingJokes, errorFetching, jokesFetched };
+    return { jokesCategory, isFetchingJokesCategory, jokesCategoryFetched, errorFetchingCategory };
   },
 };
 export default apiQuery;
