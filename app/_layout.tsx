@@ -7,7 +7,7 @@ const config = createTamagui(defaultConfig);
 const RootLayout = () => {
   return (
     <TamaguiProvider config={config}>
-      <Stack>
+      <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" options={{ headerShown: false }} />
       </Stack>
     </TamaguiProvider>
