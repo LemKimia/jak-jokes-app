@@ -1,21 +1,20 @@
 import apiQuery from "../utils/query";
 import HomeScreen from "../screen/HomeScreen";
-import { useQueries } from "@tanstack/react-query";
-import api from "../utils/api";
-import { Jokes } from "../utils/type";
 
 const Index = () => {
-  const { isFetchingJokesCategory, jokesCategory } =
+  const { isFetchingJokesCategory, jokesCategory, jokesCategoryFetched } =
     apiQuery.fetchJokesCategory();
-  const { jokes } = apiQuery.fetchJokes("any");
-  const cleanJokesCategory = jokesCategory.slice(0, 5);
-  const { jokesData } = apiQuery.fetchAllJokes(cleanJokesCategory);
+  const { jokes } = apiQuery.fetchJokes("Any");
 
+  const cleanJokesCategory = jokesCategory
+    ? jokesCategory.slice(0, 5)
+    : ["Any"];
+  const { jokesData } = apiQuery.fetchAllJokes(cleanJokesCategory);
 
   return (
     <HomeScreen
       isFetchingJokesCategory={isFetchingJokesCategory}
-      jokesCategory={jokesCategory}
+      jokesCategory={cleanJokesCategory}
       jokes={jokesData}
     />
   );

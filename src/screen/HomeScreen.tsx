@@ -1,4 +1,3 @@
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   ScrollView,
   Text,
@@ -8,15 +7,20 @@ import {
   Square,
 } from "tamagui";
 import { ChevronDown } from "@tamagui/lucide-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { Jokes } from "../utils/type";
 
 type HomeScreenProps = {
+  jokes: Jokes[];
   jokesCategory: string[];
   isFetchingJokesCategory: boolean;
 };
 
 const HomeScreen = ({
+  jokes,
+  jokesCategory,
   isFetchingJokesCategory,
-  jokesCategory = [],
 }: HomeScreenProps) => {
   const { bottom, top } = useSafeAreaInsets();
 
@@ -49,7 +53,9 @@ const HomeScreen = ({
                 >
                   {({ open }: { open: boolean }) => (
                     <>
-                      <Paragraph>{index + 1}.  {category}</Paragraph>
+                      <Paragraph>
+                        {index + 1}. {category}
+                      </Paragraph>
                       <Square
                         animation="quick"
                         rotate={open ? "180deg" : "0deg"}
@@ -64,11 +70,22 @@ const HomeScreen = ({
                     animation="medium"
                     exitStyle={{ opacity: 0 }}
                   >
-                    <Paragraph>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua.
-                    </Paragraph>
+                    {jokes && jokes.length > 0 ? (
+                      jokes
+                        .filter((item, index) => {
+                          if (category === "Any") {
+                            return index < 2;
+                          }
+                          return item.category === category;
+                        })
+                        .map((jok) => (
+                          <Square key={jok.id} borderWidth={1}>
+                            <Paragraph>{jok.joke}</Paragraph>
+                          </Square>
+                        ))
+                    ) : (
+                      <Paragraph>Loading jokes...</Paragraph>
+                    )}
                   </Accordion.Content>
                 </Accordion.HeightAnimator>
               </Accordion.Item>
