@@ -5,13 +5,14 @@ const apiQuery = {
   fetchJokes() {
     const {
       data: jokes,
-      isPending: isFetchingJokes,
+      isFetching: isFetchingJokes,
+      isSuccess: jokesFetched,
       error: errorFetching,
     } = useQuery({
       queryFn: api.getJokes,
       queryKey: ["jokes"],
     });
-    return { jokes, isFetchingJokes, errorFetching };
+    return { jokes, isFetchingJokes, errorFetching, jokesFetched };
   },
 };
 export default apiQuery;
