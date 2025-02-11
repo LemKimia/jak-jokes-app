@@ -12,7 +12,7 @@ const Index = () => {
     if (jokes && jokesFetched) {
       setJokes(jokes);
     }
-  }, []);
+  }, [jokes, jokesFetched]);
   return <HomeScreen isFetchingJokes={isFetchingJokes} jokes={jokes} />;
 };
 
