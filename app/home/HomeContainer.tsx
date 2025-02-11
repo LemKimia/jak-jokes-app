@@ -1,5 +1,7 @@
 import { HomeScreen } from "@/screen/HomeScreen";
 
-export const HomeContainer = () => {
+const HomeContainer = () => {
   return <HomeScreen/>;
 }
+
+export default HomeContainer;
