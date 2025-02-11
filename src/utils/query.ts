@@ -9,7 +9,7 @@ const apiQuery = {
       isSuccess: jokesFetched,
       error: errorFetching,
     } = useQuery({
-      queryFn: api.getJokes,
+      queryFn: api.getJokesCategory,
       queryKey: ["jokes"],
     });
     return { jokes, isFetchingJokes, errorFetching, jokesFetched };

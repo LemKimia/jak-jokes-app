@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = {
-  async getJokes() {
+  async getJokesCategory() {
     const url = "https://v2.jokeapi.dev/categories";
     try {
       const response = await axios.get(url);
