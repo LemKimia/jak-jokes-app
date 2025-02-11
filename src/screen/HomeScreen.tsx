@@ -1,9 +1,22 @@
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ScrollView, Text, YStack, Accordion, Paragraph, Square } from "tamagui";
+import {
+  ScrollView,
+  Text,
+  YStack,
+  Accordion,
+  Paragraph,
+  Square,
+} from "tamagui";
 import { ChevronDown } from "@tamagui/lucide-icons";
+import { Jokes } from "../utils/type";
 
-export const HomeScreen = () => {
-   const { bottom, top } = useSafeAreaInsets();
+type HomeScreenProps = {
+  jokes: Jokes[];
+  isFetchingJokes: boolean;
+};
+
+const HomeScreen = ({ isFetchingJokes, jokes }: HomeScreenProps) => {
+  const { bottom, top } = useSafeAreaInsets();
   return (
     <ScrollView
       flex={1}
@@ -76,3 +89,5 @@ export const HomeScreen = () => {
     </ScrollView>
   );
 };
+
+export default HomeScreen;
