@@ -1,4 +1,4 @@
-import { HomeScreen } from "@/screen/HomeScreen";
+import { HomeScreen } from "../screen/HomeScreen";
 
 const Index = () => {
   return <HomeScreen />;
