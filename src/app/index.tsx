@@ -6,7 +6,6 @@ import api from "../utils/api";
 
 const Index = () => {
   const [jokes, setJokes] = useState<Record<string, Jokes[]>>({});
-  const [error, setError] = useState<string | null>(null);
 
   const { isFetchingJokesCategory, jokesCategory } =
     apiQuery.fetchJokesCategory();
@@ -65,8 +64,6 @@ const Index = () => {
 
   // Function to fetch more jokes of a specific category
   const handleFetchMoreJokes = useCallback(async (category: string) => {
-    setError(null);
-
     try {
       const response = await api.getJokes(category);
 
@@ -82,7 +79,6 @@ const Index = () => {
       }));
     } catch (err) {
       console.error("Error fetching more jokes:", err);
-      setError("Failed to fetch more jokes. Please try again.");
     }
   }, []);
 
