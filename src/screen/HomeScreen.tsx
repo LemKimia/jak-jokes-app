@@ -10,6 +10,7 @@ type HomeScreenProps = {
   handleRefresh: () => void;
   handleFetchMoreJokes: (category: string) => void;
   getJokesByCategory: (category: string) => Jokes[];
+  moveJokesCategoryToTop: (category: string) => void;
 };
 
 const HomeScreen = ({
@@ -18,6 +19,7 @@ const HomeScreen = ({
   getJokesByCategory,
   handleFetchMoreJokes,
   handleRefresh,
+  moveJokesCategoryToTop,
 }: HomeScreenProps) => {
   return (
     <FlatList
@@ -62,6 +64,7 @@ const HomeScreen = ({
             index={index}
             item={item}
             jokesList={jokesList}
+            moveJokesCategoryToTop={moveJokesCategoryToTop}
           />
         );
       }}
@@ -74,6 +77,7 @@ type JokesAccordionProps = {
   index: number;
   jokesList: Jokes[];
   handleFetchMoreJokes: (category: string) => void;
+  moveJokesCategoryToTop: (category: string) => void;
 };
 
 const JokesAccordion = ({
@@ -81,6 +85,7 @@ const JokesAccordion = ({
   item,
   jokesList,
   handleFetchMoreJokes,
+  moveJokesCategoryToTop,
 }: JokesAccordionProps) => {
   return (
     <Accordion overflow="hidden" width="$20" type="multiple">
@@ -91,7 +96,19 @@ const JokesAccordion = ({
               <Paragraph>
                 {index + 1}. {item}
               </Paragraph>
-              <Square animation="quick" rotate={open ? "180deg" : "0deg"}>
+
+              <Square
+                flexDirection="row"
+                animation="quick"
+                rotate={open ? "180deg" : "0deg"}
+              >
+                <Button
+                  rotate={open ? "180deg" : "0deg"}
+                  size="$2"
+                  onPress={() => moveJokesCategoryToTop(item)}
+                >
+                  <Text fontSize="$1">{open ? "Move!" : "Move?"}</Text>
+                </Button>
                 <ChevronDown size="$1" />
               </Square>
             </>

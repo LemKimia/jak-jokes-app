@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import apiQuery from "../utils/query";
 import HomeScreen from "../screen/HomeScreen";
 import { Jokes } from "../utils/type";
 import api from "../utils/api";
 import useJokesStore from "../utils/store";
+import { FlatList } from "react-native";
 
 const Index = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -14,6 +15,7 @@ const Index = () => {
 
   const jokesData = useJokesStore((state) => state.jokes);
   const jokesCategory = useJokesStore((state) => state.jokesCategory);
+  const moveCategoryToTop = useJokesStore((state) => state.moveCategoryToTop);
   const clearJokes = useJokesStore((state) => state.clearJokes);
   const clearJokesCategory = useJokesStore((state) => state.clearJokesCategory);
 
@@ -93,6 +95,12 @@ const Index = () => {
   const getJokesByCategory = (category: string) => {
     return jokes[category] || [];
   };
+  const flatListRef = useRef<FlatList>(null);
+
+  const moveJokesCategoryToTop = (category: string) => {
+    moveCategoryToTop(category);
+    flatListRef.current?.scrollToOffset({ animated: true, offset: 0 });
+  };
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -113,6 +121,7 @@ const Index = () => {
       jokesCategory={memoizedJokesCategory}
       handleFetchMoreJokes={handleFetchMoreJokes}
       handleRefresh={handleRefresh}
+      moveJokesCategoryToTop={moveJokesCategoryToTop}
     />
   );
 };
