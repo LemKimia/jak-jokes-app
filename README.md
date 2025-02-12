@@ -1,50 +1,46 @@
-# Welcome to your Expo app 👋
+# Jakmall Mobile Developer Test
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is a **mobile application** built using **React Native** as part of the technical test for the Mobile Developer position at Jakmall.
 
-## Get started
+## 📜 Task Description
 
-1. Install dependencies
+As a Mobile Developer candidate, the task involves developing a feature-rich mobile application following the provided problem statement. The challenge requires implementing functionalities such as API integration, state management, and UI improvements.
 
-   ```bash
-   npm install
-   ```
+You can read the full test details in the provided instructions.
 
-2. Start the app
+## 🚀 Features Implemented
 
-   ```bash
-    npx expo start
-   ```
+- Fetch jokes by category from a public API.
+- Load additional jokes dynamically with a limit on fetch count.
+- Display jokes in an accordion-style list.
+- Implement pull-to-refresh functionality for better UX.
+- Improved state management using Zustand.
+- Optimized UI and performance with FlatList.
+- Enhanced loading indicators for better feedback.
 
-In the output, you'll find options to open the app in a
+## 🛠️ Tech Stack
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- **React Native** (with Expo)
+- **TypeScript**
+- **Tamagui** (for UI components)
+- **Zustand** (for state management)
+- **React Query** (for data fetching)
+- **Axios** (for API requests)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🤖 API Reference
 
-## Get a fresh project
+Jokes are fetched from the following public API:
 
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+https://api.example.com/jokes/{category}
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 📌 Notes
 
-## Learn more
+- The app limits joke fetching per category to **2 times** before hiding the fetch button.
+- The category list is managed dynamically.
+- UI components are styled using **Tamagui** for better performance.
 
-To learn more about developing your project with Expo, look at the following resources:
+## 👨‍💻 Author
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Developed by **Samuel Joel Tangkawarow** as part of the Jakmall Mobile Developer Test.
