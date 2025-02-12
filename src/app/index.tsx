@@ -10,6 +10,7 @@ const Index = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [fetchingJokes, setFetchingJokes] = useState(false);
   const [jokes, setJokes] = useState<Record<string, Jokes[]>>({});
+  const [fetchCount, setFetchCount] = useState<{ [key: string]: number }>({});
 
   const { isFetchingJokesCategory, fetchJokesCategory } =
     apiQuery.fetchJokesCategory();
@@ -73,28 +74,45 @@ const Index = () => {
     });
   }, [uniqueAllJokesData]);
 
-  // Function to fetch more jokes of a specific category
-  const handleFetchMoreJokes = useCallback(async (category: string) => {
-    try {
-      setFetchingJokes(true);
-      const response = await api.getJokes(category);
+  useEffect(() => {
+    const initialFetchCount = jokesCategory.reduce((acc, category) => {
+      acc[category] = 0; 
+      return acc;
+    }, {} as { [key: string]: number });
 
-      // Update jokes state while ensuring no duplicates
-      setJokes((prevJokes) => ({
-        ...prevJokes,
-        [category]: [
-          ...(prevJokes[category] || []),
-          ...response.filter(
-            (joke) => !prevJokes[category]?.some((j) => j.id === joke.id)
-          ),
-        ],
-      }));
-    } catch (err) {
-      console.error("Error fetching more jokes:", err);
-    } finally {
-      setFetchingJokes(false); 
-    }
-  }, []);
+    setFetchCount(initialFetchCount);
+  }, [jokesCategory]);
+
+  // Function to fetch more jokes of a specific category
+  const handleFetchMoreJokes = useCallback(
+    async (category: string) => {
+      if (fetchCount[category] >= 2) return;
+      try {
+        setFetchingJokes(true);
+        const response = await api.getJokes(category);
+
+        // Update jokes state while ensuring no duplicates
+        setJokes((prevJokes) => ({
+          ...prevJokes,
+          [category]: [
+            ...(prevJokes[category] || []),
+            ...response.filter(
+              (joke) => !prevJokes[category]?.some((j) => j.id === joke.id)
+            ),
+          ],
+        }));
+        setFetchCount((prev) => ({
+          ...prev,
+          [category]: (prev[category] || 0) + 1,
+        }));
+      } catch (err) {
+        console.error("Error fetching more jokes:", err);
+      } finally {
+        setFetchingJokes(false);
+      }
+    },
+    [fetchCount]
+  );
 
   const getJokesByCategory = (category: string) => {
     return jokes[category] || [];
@@ -120,6 +138,7 @@ const Index = () => {
 
   return (
     <HomeScreen
+    fetchCount={fetchCount}
     fetchingJokes={fetchingJokes}
       isScreenLoading={isScreenLoading}
       getJokesByCategory={getJokesByCategory}

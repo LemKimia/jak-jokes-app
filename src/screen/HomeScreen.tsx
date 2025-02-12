@@ -19,6 +19,9 @@ type HomeScreenProps = {
   jokesCategory: string[];
   isScreenLoading: boolean;
   fetchingJokes: boolean;
+  fetchCount: {
+    [key: string]: number;
+  };
   handleRefresh: () => void;
   handleFetchMoreJokes: (category: string) => void;
   getJokesByCategory: (category: string) => Jokes[];
@@ -33,6 +36,7 @@ const HomeScreen = ({
   handleRefresh,
   moveJokesCategoryToTop,
   fetchingJokes,
+  fetchCount
 }: HomeScreenProps) => {
   return (
     <FlatList
@@ -74,6 +78,7 @@ const HomeScreen = ({
             handleFetchMoreJokes={handleFetchMoreJokes}
             index={index}
             item={item}
+            fetchCount={fetchCount}
             jokesList={jokesList}
             fetchingJokes={fetchingJokes}
             moveJokesCategoryToTop={moveJokesCategoryToTop}
@@ -87,6 +92,9 @@ const HomeScreen = ({
 type JokesAccordionProps = {
   item: string;
   index: number;
+  fetchCount: {
+    [key: string]: number;
+  };
   jokesList: Jokes[];
   fetchingJokes: boolean;
   handleFetchMoreJokes: (category: string) => void;
@@ -96,6 +104,7 @@ type JokesAccordionProps = {
 const JokesAccordion = ({
   index,
   item,
+  fetchCount,
   jokesList,
   fetchingJokes,
   handleFetchMoreJokes,
@@ -162,7 +171,8 @@ const JokesAccordion = ({
                 </Square>
               )}
 
-              <Button
+              {fetchCount[item] < 2 && (
+                <Button
                 backgroundColor="#f2300c"
                 onPress={() => handleFetchMoreJokes(item)}
                 disabled={fetchingJokes}
@@ -172,6 +182,8 @@ const JokesAccordion = ({
                   {!fetchingJokes && "Get more jokes"}
                 </Text>
               </Button>
+              )}
+              
             </Accordion.Content>
           </Accordion.HeightAnimator>
         </Accordion.Item>
