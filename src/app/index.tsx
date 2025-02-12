@@ -17,6 +17,11 @@ const Index = () => {
   const { allJokesData, isLoading } =
     apiQuery.fetchAllJokes(cleanJokesCategory);
 
+  const memoizedJokesCategory = useMemo(
+    () => cleanJokesCategory,
+    [cleanJokesCategory]
+  );
+
   // Remove duplicate jokes using useMemo for optimization
   const uniqueAllJokesData = useMemo(() => {
     if (!allJokesData || allJokesData.length === 0) return [];
@@ -79,7 +84,7 @@ const Index = () => {
       console.error("Error fetching more jokes:", err);
       setError("Failed to fetch more jokes. Please try again.");
     }
-  }, []); 
+  }, []);
 
   const getJokesByCategory = (category: string) => {
     return jokes[category] || [];
@@ -89,7 +94,7 @@ const Index = () => {
     <HomeScreen
       isFetchingJokesCategory={isFetchingJokesCategory || isLoading}
       getJokesByCategory={getJokesByCategory}
-      jokesCategory={cleanJokesCategory}
+      jokesCategory={memoizedJokesCategory}
       jokes={jokes}
       handleFetchMoreJokes={handleFetchMoreJokes}
     />
