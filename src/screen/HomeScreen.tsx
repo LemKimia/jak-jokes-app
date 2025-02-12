@@ -1,11 +1,4 @@
-import {
-  Text,
-  Accordion,
-  Paragraph,
-  Square,
-  Button,
-  Spinner,
-} from "tamagui";
+import { Text, Accordion, Paragraph, Square, Button } from "tamagui";
 import { ChevronDown } from "@tamagui/lucide-icons";
 
 import { Jokes } from "../utils/type";
@@ -29,13 +22,13 @@ const HomeScreen = ({
   return (
     <FlatList
       data={jokesCategory}
-      keyExtractor={(item, index) => `joke-category-${item}`}
-      style={{ width: "100%" }}
+      keyExtractor={(item) => `joke-category-${item}`}
+      style={{ flex: 1, marginTop: 10 }}
       contentContainerStyle={{
+        flexGrow: 1,
         justifyContent: "center",
         alignItems: "center",
         paddingBottom: 30,
-        paddingTop: 10,
       }}
       refreshControl={
         <RefreshControl
@@ -45,15 +38,16 @@ const HomeScreen = ({
       }
       ListEmptyComponent={
         isScreenLoading ? (
-          <Text>Loading ...</Text>
+          <Text>Finding better jokes ...</Text>
         ) : (
-          <Text>No joke categories available.</Text>
+          <Paragraph>No joke categories available. Try refreshing !</Paragraph>
         )
       }
       renderItem={({ item, index }) => {
         const jokesList = getJokesByCategory(item);
         return (
           <JokesAccordion
+            key={`joke-category-${item}`}
             handleFetchMoreJokes={handleFetchMoreJokes}
             index={index}
             item={item}
