@@ -9,6 +9,7 @@ const apiQuery = {
       isFetching: isFetchingJokesCategory,
       isSuccess: jokesCategoryFetched,
       error: errorFetchingCategory,
+      refetch: fetchJokesCategory,
     } = useQuery({
       queryFn: api.getJokesCategory,
       queryKey: ["jokesCategory"],
@@ -18,11 +19,12 @@ const apiQuery = {
       isFetchingJokesCategory,
       jokesCategoryFetched,
       errorFetchingCategory,
+      fetchJokesCategory,
     };
   },
   fetchJokes(category: string) {
     const {
-      data: jokes=[],
+      data: jokes = [],
       isFetching: isFetchingJokes,
       isSuccess: jokesFetched,
       error: errorFetchingJokes,
@@ -31,7 +33,7 @@ const apiQuery = {
       queryFn: () => api.getJokes(category),
       queryKey: ["jokes", category],
       staleTime: 60000,
-      enabled: !!category
+      enabled: !!category,
     });
     return {
       jokes,

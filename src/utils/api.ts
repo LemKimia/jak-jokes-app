@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Jokes, jokesCategoryResponse, JokesResponse } from "./type";
+import useJokesStore from "./store";
 
 const api = {
   async getJokesCategory(): Promise<string[]> {
@@ -10,6 +11,8 @@ const api = {
         console.warn("Invalid category response", response.data);
         return [];
       }
+      const setJokesCategory = useJokesStore.getState().setJokesCategory;
+      setJokesCategory(response.data.categories);
       return response.data.categories;
     } catch (error) {
       console.error("Error fetching jokes", error);
