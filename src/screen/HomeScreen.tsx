@@ -1,4 +1,4 @@
-import { Text, Accordion, Paragraph, Square, Button } from "tamagui";
+import { Text, Accordion, Paragraph, Square, Button, H3 } from "tamagui";
 import { ChevronDown } from "@tamagui/lucide-icons";
 
 import { Jokes } from "../utils/type";
@@ -29,6 +29,8 @@ const HomeScreen = ({
         justifyContent: "center",
         alignItems: "center",
         paddingBottom: 30,
+        // paddingVertical: 10,
+        // marginTop: 10,
       }}
       refreshControl={
         <RefreshControl
@@ -43,6 +45,14 @@ const HomeScreen = ({
           <Paragraph>No joke categories available. Try refreshing !</Paragraph>
         )
       }
+      ListHeaderComponent={isScreenLoading ? null : <H3>Jak-Jokes App</H3>}
+      ListHeaderComponentStyle={{
+        width: "100%",
+        marginBottom: 10,
+        marginHorizontal: 10,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
       renderItem={({ item, index }) => {
         const jokesList = getJokesByCategory(item);
         return (
