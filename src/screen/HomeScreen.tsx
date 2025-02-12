@@ -1,4 +1,14 @@
-import { Text, Accordion, Paragraph, Square, Button, H3, Dialog, Unspaced } from "tamagui";
+import {
+  Text,
+  Accordion,
+  Paragraph,
+  Square,
+  Button,
+  H3,
+  Dialog,
+  Unspaced,
+  Spinner,
+} from "tamagui";
 import { ChevronDown, X } from "@tamagui/lucide-icons";
 
 import { Jokes } from "../utils/type";
@@ -8,6 +18,7 @@ import { useState } from "react";
 type HomeScreenProps = {
   jokesCategory: string[];
   isScreenLoading: boolean;
+  fetchingJokes: boolean;
   handleRefresh: () => void;
   handleFetchMoreJokes: (category: string) => void;
   getJokesByCategory: (category: string) => Jokes[];
@@ -21,6 +32,7 @@ const HomeScreen = ({
   handleFetchMoreJokes,
   handleRefresh,
   moveJokesCategoryToTop,
+  fetchingJokes,
 }: HomeScreenProps) => {
   return (
     <FlatList
@@ -32,8 +44,6 @@ const HomeScreen = ({
         justifyContent: "center",
         alignItems: "center",
         paddingBottom: 30,
-        // paddingVertical: 10,
-        // marginTop: 10,
       }}
       refreshControl={
         <RefreshControl
@@ -65,6 +75,7 @@ const HomeScreen = ({
             index={index}
             item={item}
             jokesList={jokesList}
+            fetchingJokes={fetchingJokes}
             moveJokesCategoryToTop={moveJokesCategoryToTop}
           />
         );
@@ -77,6 +88,7 @@ type JokesAccordionProps = {
   item: string;
   index: number;
   jokesList: Jokes[];
+  fetchingJokes: boolean;
   handleFetchMoreJokes: (category: string) => void;
   moveJokesCategoryToTop: (category: string) => void;
 };
@@ -85,10 +97,11 @@ const JokesAccordion = ({
   index,
   item,
   jokesList,
+  fetchingJokes,
   handleFetchMoreJokes,
   moveJokesCategoryToTop,
 }: JokesAccordionProps) => {
-  const [selectedJoke, setSelectedJoke] = useState<string|null>(null);
+  const [selectedJoke, setSelectedJoke] = useState<string | null>(null);
   return (
     <>
       <Accordion
@@ -131,8 +144,12 @@ const JokesAccordion = ({
             <Accordion.Content animation="medium" exitStyle={{ opacity: 0 }}>
               {jokesList.length > 0 ? (
                 jokesList.map((jok) => (
-                  <Square key={`joke-${jok.id}`} marginVertical={5} paddingVertical={5}>
-                    <Button size="$5"  onPress={() => setSelectedJoke(jok.joke)}>
+                  <Square
+                    key={`joke-${jok.id}`}
+                    marginVertical={5}
+                    paddingVertical={5}
+                  >
+                    <Button size="$5" onPress={() => setSelectedJoke(jok.joke)}>
                       <Paragraph numberOfLines={2} ellipsizeMode="tail">
                         {jok.joke}
                       </Paragraph>
@@ -148,8 +165,12 @@ const JokesAccordion = ({
               <Button
                 backgroundColor="#f2300c"
                 onPress={() => handleFetchMoreJokes(item)}
+                disabled={fetchingJokes}
+                icon={fetchingJokes ? <Spinner /> : undefined}
               >
-                <Text color="white">Get more jokes</Text>
+                <Text color="white">
+                  {!fetchingJokes && "Get more jokes"}
+                </Text>
               </Button>
             </Accordion.Content>
           </Accordion.HeightAnimator>
@@ -165,7 +186,7 @@ type JokesDialogProps = {
   onClose: () => void;
 };
 
-const JokesDialog = ({ joke,onClose }: JokesDialogProps) => {
+const JokesDialog = ({ joke, onClose }: JokesDialogProps) => {
   return (
     <Dialog modal open={!!joke} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <Dialog.Portal>

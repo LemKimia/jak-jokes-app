@@ -8,6 +8,7 @@ import { FlatList } from "react-native";
 
 const Index = () => {
   const [refreshing, setRefreshing] = useState(false);
+  const [fetchingJokes, setFetchingJokes] = useState(false);
   const [jokes, setJokes] = useState<Record<string, Jokes[]>>({});
 
   const { isFetchingJokesCategory, fetchJokesCategory } =
@@ -75,6 +76,7 @@ const Index = () => {
   // Function to fetch more jokes of a specific category
   const handleFetchMoreJokes = useCallback(async (category: string) => {
     try {
+      setFetchingJokes(true);
       const response = await api.getJokes(category);
 
       // Update jokes state while ensuring no duplicates
@@ -89,6 +91,8 @@ const Index = () => {
       }));
     } catch (err) {
       console.error("Error fetching more jokes:", err);
+    } finally {
+      setFetchingJokes(false); 
     }
   }, []);
 
@@ -116,6 +120,7 @@ const Index = () => {
 
   return (
     <HomeScreen
+    fetchingJokes={fetchingJokes}
       isScreenLoading={isScreenLoading}
       getJokesByCategory={getJokesByCategory}
       jokesCategory={memoizedJokesCategory}
