@@ -15,6 +15,7 @@ import { Jokes } from "../utils/type";
 type HomeScreenProps = {
   jokes: Jokes[];
   jokesCategory: string[];
+  handleFetchMoreJokes: (category: string) => void;
   isFetchingJokesCategory: boolean;
   getJokesByCategory: (category: string) => Jokes[];
 };
@@ -23,7 +24,7 @@ const HomeScreen = ({
   jokes,
   jokesCategory,
   isFetchingJokesCategory,
-  getJokesByCategory,
+  getJokesByCategory,handleFetchMoreJokes
 }: HomeScreenProps) => {
   const { bottom, top } = useSafeAreaInsets();
 
@@ -82,6 +83,14 @@ const HomeScreen = ({
                     ) : (
                       <Paragraph>Loading jokes...</Paragraph>
                     )}
+
+                    <Button
+                      onPress={() => {
+                        handleFetchMoreJokes(category);
+                      }}
+                    >
+                      <Text>Get more jokes</Text>
+                    </Button>
                   </Accordion.Content>
                 </Accordion.HeightAnimator>
               </Accordion.Item>

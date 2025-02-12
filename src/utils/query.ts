@@ -47,12 +47,12 @@ const apiQuery = {
       })),
     });
 
-    const jokesData: Jokes[] = jokesQueries.flatMap(
+    const allJokesData: Jokes[] = jokesQueries.flatMap(
       (query) => query.data ?? []
     );
     const isLoading = jokesQueries.some((query) => query.isLoading);
 
-    return { jokesData, isLoading };
+    return { allJokesData, isLoading };
   },
 };
 export default apiQuery;

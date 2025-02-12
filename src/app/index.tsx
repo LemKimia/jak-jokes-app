@@ -1,24 +1,29 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import apiQuery from "../utils/query";
 import HomeScreen from "../screen/HomeScreen";
+import { Jokes } from "../utils/type";
+import api from "../utils/api";
 
 const Index = () => {
+  const [jokes, setJokes] = useState<Jokes[]>([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const { isFetchingJokesCategory, jokesCategory, jokesCategoryFetched } =
     apiQuery.fetchJokesCategory();
-  const { jokes } = apiQuery.fetchJokes("Any");
 
   const cleanJokesCategory = jokesCategory
     ? jokesCategory.slice(0, 5)
     : ["Any"];
-  const { jokesData } = apiQuery.fetchAllJokes(cleanJokesCategory);
+  const { allJokesData } = apiQuery.fetchAllJokes(cleanJokesCategory);
 
   const getJokesByCategory = useCallback(
     (category: string) => {
-      if (!jokesData || jokesData.length === 0) return [];
+      if (!allJokesData || allJokesData.length === 0) return [];
 
       let seenJokes = new Set<number>();
 
-      return jokesData
+      return allJokesData
         .filter((item, index) =>
           category === "Any" ? index < 2 : item.category === category
         )
@@ -28,7 +33,24 @@ const Index = () => {
           return true;
         });
     },
-    [jokesData]
+    [allJokesData]
+  );
+
+  const handleFetchMoreJokes = useCallback(
+    async (category: string) => {
+      setIsFetching(true);
+      setError(null);
+
+       try {
+         const response = await api.getJokes(category);
+         setJokes((prevJokes) => [...prevJokes, ...response]); 
+       } catch (err) {
+         setError("Failed to fetch jokes.");
+       } finally {
+         setIsFetching(false);
+       }
+    },
+    []
   );
 
   return (
@@ -36,7 +58,8 @@ const Index = () => {
       isFetchingJokesCategory={isFetchingJokesCategory}
       getJokesByCategory={getJokesByCategory}
       jokesCategory={cleanJokesCategory}
-      jokes={jokesData}
+      jokes={jokes}
+      handleFetchMoreJokes={handleFetchMoreJokes}
     />
   );
 };
