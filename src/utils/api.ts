@@ -31,6 +31,8 @@ const api = {
         console.warn("Unexpected jokes data format", response.data);
         return [];
       }
+      const setJokes = useJokesStore.getState().setJokes;
+      setJokes(response.data.jokes);
       return response.data.jokes;
     } catch (error) {
       console.error("Error fetching jokes", error);

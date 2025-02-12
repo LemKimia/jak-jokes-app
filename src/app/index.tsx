@@ -3,19 +3,24 @@ import apiQuery from "../utils/query";
 import HomeScreen from "../screen/HomeScreen";
 import { Jokes } from "../utils/type";
 import api from "../utils/api";
+import useJokesStore from "../utils/store";
 
 const Index = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [jokes, setJokes] = useState<Record<string, Jokes[]>>({});
 
-  const { isFetchingJokesCategory, jokesCategory } =
+  const { isFetchingJokesCategory, fetchJokesCategory } =
     apiQuery.fetchJokesCategory();
 
-  // Limit categories to first 5 or default to "Any"
-  const cleanJokesCategory = jokesCategory?.slice(0, 5) || ["Any"];
+  const jokesData = useJokesStore((state) => state.jokes);
+  const jokesCategory = useJokesStore((state) => state.jokesCategory);
+  const clearJokes = useJokesStore((state) => state.clearJokes);
+  const clearJokesCategory = useJokesStore((state) => state.clearJokesCategory);
 
-  const { allJokesData, isLoading } =
-    apiQuery.fetchAllJokes(cleanJokesCategory);
+  // Limit categories to first 5 or default to "Any"
+  const cleanJokesCategory = jokesCategory?.slice(0, 5) || [];
+
+  const { isLoading } = apiQuery.fetchAllJokes(cleanJokesCategory);
 
   const isScreenLoading = isLoading || isFetchingJokesCategory || refreshing;
 
@@ -26,19 +31,19 @@ const Index = () => {
 
   // Remove duplicate jokes using useMemo for optimization
   const uniqueAllJokesData = useMemo(() => {
-    if (!allJokesData || allJokesData.length === 0) return [];
+    if (!jokesData || jokesData.length === 0) return [];
 
     const seen = new Set();
-    return allJokesData.filter((joke) => {
+    return jokesData.filter((joke) => {
       if (seen.has(joke.id)) return false;
       seen.add(joke.id);
       return true;
     });
-  }, [allJokesData]);
+  }, [jokesData]);
 
   // Effect to update the state with fetched jokes
   useEffect(() => {
-    if (!allJokesData || allJokesData.length === 0) return;
+    if (!jokesData || jokesData.length === 0) return;
 
     setJokes((prevJokes) => {
       const newJokesMap = { ...prevJokes };
@@ -91,9 +96,12 @@ const Index = () => {
 
   const handleRefresh = () => {
     setRefreshing(true);
+    clearJokes();
+    clearJokesCategory();
     setJokes({});
 
     setTimeout(() => {
+      fetchJokesCategory();
       setRefreshing(false);
     }, 2000);
   };
