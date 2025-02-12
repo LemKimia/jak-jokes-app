@@ -91,7 +91,14 @@ const JokesAccordion = ({
   const [selectedJoke, setSelectedJoke] = useState<string|null>(null);
   return (
     <>
-      <Accordion overflow="hidden" width="$20" type="multiple">
+      <Accordion
+        marginVertical={5}
+        borderWidth={1}
+        borderRadius="$8"
+        overflow="hidden"
+        width="$20"
+        type="multiple"
+      >
         <Accordion.Item key={`category-${item}-${index}`} value={item}>
           <Accordion.Trigger flexDirection="row" justifyContent="space-between">
             {({ open }: { open: boolean }) => (
@@ -109,8 +116,11 @@ const JokesAccordion = ({
                     rotate={open ? "180deg" : "0deg"}
                     size="$2"
                     onPress={() => moveJokesCategoryToTop(item)}
+                    backgroundColor="#f2300c"
                   >
-                    <Text fontSize="$1">{open ? "Move!" : "Move?"}</Text>
+                    <Text color="white" fontSize="$1">
+                      {open ? "Move!" : "Move?"}
+                    </Text>
                   </Button>
                   <ChevronDown size="$1" />
                 </Square>
@@ -121,8 +131,8 @@ const JokesAccordion = ({
             <Accordion.Content animation="medium" exitStyle={{ opacity: 0 }}>
               {jokesList.length > 0 ? (
                 jokesList.map((jok) => (
-                  <Square key={`joke-${jok.id}`} marginVertical={5}>
-                    <Button size="$5" onPress={() => setSelectedJoke(jok.joke)}>
+                  <Square key={`joke-${jok.id}`} marginVertical={5} paddingVertical={5}>
+                    <Button size="$5"  onPress={() => setSelectedJoke(jok.joke)}>
                       <Paragraph numberOfLines={2} ellipsizeMode="tail">
                         {jok.joke}
                       </Paragraph>
@@ -130,20 +140,22 @@ const JokesAccordion = ({
                   </Square>
                 ))
               ) : (
-                <Text>Loading jokes...</Text>
+                <Square marginVertical={5} padded>
+                  <Text>Loading jokes...</Text>
+                </Square>
               )}
 
-              <Button onPress={() => handleFetchMoreJokes(item)}>
-                <Text>Get more jokes</Text>
+              <Button
+                backgroundColor="#f2300c"
+                onPress={() => handleFetchMoreJokes(item)}
+              >
+                <Text color="white">Get more jokes</Text>
               </Button>
             </Accordion.Content>
           </Accordion.HeightAnimator>
         </Accordion.Item>
       </Accordion>
-      <JokesDialog
-        joke={selectedJoke}
-        onClose={() => setSelectedJoke(null)}
-      />
+      <JokesDialog joke={selectedJoke} onClose={() => setSelectedJoke(null)} />
     </>
   );
 };
