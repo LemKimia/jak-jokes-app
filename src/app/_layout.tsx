@@ -1,8 +1,8 @@
 import { Stack } from "expo-router";
+import { PortalProvider } from "@tamagui/portal";
 import { defaultConfig } from "@tamagui/config/v4";
 import { createTamagui, TamaguiProvider } from "tamagui";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { PortalProvider } from "@tamagui/portal";
 
 const config = createTamagui(defaultConfig);
 const queryClient = new QueryClient();

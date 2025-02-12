@@ -1,6 +1,6 @@
 import axios from "axios";
-import { Jokes, jokesCategoryResponse, JokesResponse } from "./type";
 import useJokesStore from "./store";
+import { Jokes, jokesCategoryResponse, JokesResponse } from "./type";
 
 const api = {
   async getJokesCategory(): Promise<string[]> {

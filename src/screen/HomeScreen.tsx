@@ -6,22 +6,21 @@ import {
   Button,
   H3,
   Dialog,
-  Unspaced,
   Spinner,
 } from "tamagui";
-import { ChevronDown, X } from "@tamagui/lucide-icons";
+import { useState } from "react";
+import { ChevronDown } from "@tamagui/lucide-icons";
+import { FlatList, RefreshControl } from "react-native";
 
 import { Jokes } from "../utils/type";
-import { FlatList, RefreshControl } from "react-native";
-import { useState } from "react";
 
 type HomeScreenProps = {
-  jokesCategory: string[];
-  isScreenLoading: boolean;
-  fetchingJokes: boolean;
   fetchCount: {
     [key: string]: number;
   };
+  fetchingJokes: boolean;
+  jokesCategory: string[];
+  isScreenLoading: boolean;
   handleRefresh: () => void;
   handleFetchMoreJokes: (category: string) => void;
   getJokesByCategory: (category: string) => Jokes[];
@@ -29,14 +28,14 @@ type HomeScreenProps = {
 };
 
 const HomeScreen = ({
+  fetchCount,
+  fetchingJokes,
+  handleRefresh,
   jokesCategory,
   isScreenLoading,
   getJokesByCategory,
   handleFetchMoreJokes,
-  handleRefresh,
   moveJokesCategoryToTop,
-  fetchingJokes,
-  fetchCount
 }: HomeScreenProps) => {
   return (
     <FlatList
@@ -102,10 +101,10 @@ type JokesAccordionProps = {
 };
 
 const JokesAccordion = ({
-  index,
   item,
-  fetchCount,
+  index,
   jokesList,
+  fetchCount,
   fetchingJokes,
   handleFetchMoreJokes,
   moveJokesCategoryToTop,
@@ -173,17 +172,16 @@ const JokesAccordion = ({
 
               {fetchCount[item] < 2 && (
                 <Button
-                backgroundColor="#f2300c"
-                onPress={() => handleFetchMoreJokes(item)}
-                disabled={fetchingJokes}
-                icon={fetchingJokes ? <Spinner /> : undefined}
-              >
-                <Text color="white">
-                  {!fetchingJokes && "Get more jokes"}
-                </Text>
-              </Button>
+                  backgroundColor="#f2300c"
+                  onPress={() => handleFetchMoreJokes(item)}
+                  disabled={fetchingJokes}
+                  icon={fetchingJokes ? <Spinner /> : undefined}
+                >
+                  <Text color="white">
+                    {!fetchingJokes && "Get more jokes"}
+                  </Text>
+                </Button>
               )}
-              
             </Accordion.Content>
           </Accordion.HeightAnimator>
         </Accordion.Item>

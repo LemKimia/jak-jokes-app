@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import apiQuery from "../utils/query";
-import HomeScreen from "../screen/HomeScreen";
-import { Jokes } from "../utils/type";
-import api from "../utils/api";
-import useJokesStore from "../utils/store";
 import { FlatList } from "react-native";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+import api from "../utils/api";
+import { Jokes } from "../utils/type";
+import apiQuery from "../utils/query";
+import useJokesStore from "../utils/store";
+import HomeScreen from "../screen/HomeScreen";
 
 const Index = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -21,7 +22,6 @@ const Index = () => {
   const clearJokes = useJokesStore((state) => state.clearJokes);
   const clearJokesCategory = useJokesStore((state) => state.clearJokesCategory);
 
-  // Limit categories to first 5 or default to "Any"
   const cleanJokesCategory = jokesCategory?.slice(0, 5) || [];
 
   const { isLoading } = apiQuery.fetchAllJokes(cleanJokesCategory);
@@ -33,7 +33,6 @@ const Index = () => {
     [cleanJokesCategory]
   );
 
-  // Remove duplicate jokes using useMemo for optimization
   const uniqueAllJokesData = useMemo(() => {
     if (!jokesData || jokesData.length === 0) return [];
 
@@ -45,7 +44,6 @@ const Index = () => {
     });
   }, [jokesData]);
 
-  // Effect to update the state with fetched jokes
   useEffect(() => {
     if (!jokesData || jokesData.length === 0) return;
 
@@ -58,12 +56,10 @@ const Index = () => {
           newJokesMap[joke.category] = [];
         }
 
-        // Check if joke already exists in category
         const alreadyExists = newJokesMap[joke.category].some(
           (j: Jokes) => j.id === joke.id
         );
 
-        // If joke is new, add it to the category
         if (!alreadyExists) {
           newJokesMap[joke.category] = [...newJokesMap[joke.category], joke];
           hasNewJokes = true;
@@ -76,14 +72,13 @@ const Index = () => {
 
   useEffect(() => {
     const initialFetchCount = jokesCategory.reduce((acc, category) => {
-      acc[category] = 0; 
+      acc[category] = 0;
       return acc;
     }, {} as { [key: string]: number });
 
     setFetchCount(initialFetchCount);
   }, [jokesCategory]);
 
-  // Function to fetch more jokes of a specific category
   const handleFetchMoreJokes = useCallback(
     async (category: string) => {
       if (fetchCount[category] >= 2) return;
@@ -91,7 +86,6 @@ const Index = () => {
         setFetchingJokes(true);
         const response = await api.getJokes(category);
 
-        // Update jokes state while ensuring no duplicates
         setJokes((prevJokes) => ({
           ...prevJokes,
           [category]: [
@@ -138,13 +132,13 @@ const Index = () => {
 
   return (
     <HomeScreen
-    fetchCount={fetchCount}
-    fetchingJokes={fetchingJokes}
-      isScreenLoading={isScreenLoading}
-      getJokesByCategory={getJokesByCategory}
-      jokesCategory={memoizedJokesCategory}
-      handleFetchMoreJokes={handleFetchMoreJokes}
+      fetchCount={fetchCount}
       handleRefresh={handleRefresh}
+      fetchingJokes={fetchingJokes}
+      isScreenLoading={isScreenLoading}
+      jokesCategory={memoizedJokesCategory}
+      getJokesByCategory={getJokesByCategory}
+      handleFetchMoreJokes={handleFetchMoreJokes}
       moveJokesCategoryToTop={moveJokesCategoryToTop}
     />
   );

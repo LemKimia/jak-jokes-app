@@ -1,4 +1,5 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
+
 import api from "./api";
 import { Jokes } from "./type";
 
@@ -20,27 +21,6 @@ const apiQuery = {
       jokesCategoryFetched,
       errorFetchingCategory,
       fetchJokesCategory,
-    };
-  },
-  fetchJokes(category: string) {
-    const {
-      data: jokes = [],
-      isFetching: isFetchingJokes,
-      isSuccess: jokesFetched,
-      error: errorFetchingJokes,
-      refetch: fetchJokes,
-    } = useQuery({
-      queryFn: () => api.getJokes(category),
-      queryKey: ["jokes", category],
-      staleTime: 60000,
-      enabled: !!category,
-    });
-    return {
-      jokes,
-      isFetchingJokes,
-      jokesFetched,
-      errorFetchingJokes,
-      fetchJokes,
     };
   },
   fetchAllJokes(cleanJokesCategory: string[]) {

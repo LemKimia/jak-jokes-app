@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Jokes, JokesCategoryAliases } from "./type";
+import { Jokes } from "./type";
 
 type JokesStore = {
   jokes: Jokes[];
