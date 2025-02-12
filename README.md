@@ -1,7 +1,10 @@
 # Jakmall Mobile Developer Test
 
-This is a **mobile application** built using **React Native** as part of the technical test for the Mobile Developer position at Jakmall.
 
+![WhatsApp Image 2025-02-12 at 19 10 54_f94e2a95](https://github.com/user-attachments/assets/4f5a16d4-de5b-46d5-919e-6953d2ebd1d9)
+
+This is a **mobile application** built using **React Native** as part of the technical test for the Mobile Developer position at Jakmall.
+    
 ## 📜 Task Description
 
 As a Mobile Developer candidate, the task involves developing a feature-rich mobile application following the provided problem statement. The challenge requires implementing functionalities such as API integration, state management, and UI improvements.
