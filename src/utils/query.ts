@@ -5,7 +5,7 @@ import { Jokes } from "./type";
 const apiQuery = {
   fetchJokesCategory() {
     const {
-      data: jokesCategory,
+      data: jokesCategory = [],
       isFetching: isFetchingJokesCategory,
       isSuccess: jokesCategoryFetched,
       error: errorFetchingCategory,
@@ -22,7 +22,7 @@ const apiQuery = {
   },
   fetchJokes(category: string) {
     const {
-      data: jokes,
+      data: jokes=[],
       isFetching: isFetchingJokes,
       isSuccess: jokesFetched,
       error: errorFetchingJokes,
@@ -30,6 +30,8 @@ const apiQuery = {
     } = useQuery({
       queryFn: () => api.getJokes(category),
       queryKey: ["jokes", category],
+      staleTime: 60000,
+      enabled: !!category
     });
     return {
       jokes,
@@ -44,6 +46,7 @@ const apiQuery = {
       queries: cleanJokesCategory.map((category) => ({
         queryKey: ["jokesQuery", category],
         queryFn: () => api.getJokes(category),
+        enabled: !!category,
       })),
     });
 
