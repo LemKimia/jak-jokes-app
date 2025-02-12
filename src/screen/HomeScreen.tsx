@@ -5,6 +5,7 @@ import {
   Accordion,
   Paragraph,
   Square,
+  Button,
 } from "tamagui";
 import { ChevronDown } from "@tamagui/lucide-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -15,12 +16,14 @@ type HomeScreenProps = {
   jokes: Jokes[];
   jokesCategory: string[];
   isFetchingJokesCategory: boolean;
+  getJokesByCategory: (category: string) => Jokes[];
 };
 
 const HomeScreen = ({
   jokes,
   jokesCategory,
   isFetchingJokesCategory,
+  getJokesByCategory,
 }: HomeScreenProps) => {
   const { bottom, top } = useSafeAreaInsets();
 
@@ -70,19 +73,12 @@ const HomeScreen = ({
                     animation="medium"
                     exitStyle={{ opacity: 0 }}
                   >
-                    {jokes && jokes.length > 0 ? (
-                      jokes
-                        .filter((item, index) => {
-                          if (category === "Any") {
-                            return index < 2;
-                          }
-                          return item.category === category;
-                        })
-                        .map((jok) => (
-                          <Square key={jok.id} borderWidth={1}>
-                            <Paragraph>{jok.joke}</Paragraph>
-                          </Square>
-                        ))
+                    {getJokesByCategory(category).length > 0 ? (
+                      getJokesByCategory(category).map((jok) => (
+                        <Square key={jok.id} borderWidth={1}>
+                          <Paragraph>{jok.joke}</Paragraph>
+                        </Square>
+                      ))
                     ) : (
                       <Paragraph>Loading jokes...</Paragraph>
                     )}
