@@ -39,7 +39,7 @@ const apiQuery = {
       fetchJokes,
     };
   },
-  fetchAllJokes(cleanJokesCategory: string[] = ["any"]) {
+  fetchAllJokes(cleanJokesCategory: string[]) {
     const jokesQueries = useQueries({
       queries: cleanJokesCategory.map((category) => ({
         queryKey: ["jokesQuery", category],
