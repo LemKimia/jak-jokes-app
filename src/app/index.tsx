@@ -91,7 +91,6 @@ const Index = () => {
       isFetchingJokesCategory={isFetchingJokesCategory || isLoading}
       getJokesByCategory={getJokesByCategory}
       jokesCategory={memoizedJokesCategory}
-      jokes={jokes}
       handleFetchMoreJokes={handleFetchMoreJokes}
     />
   );

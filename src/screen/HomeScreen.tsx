@@ -1,7 +1,5 @@
 import {
-  ScrollView,
   Text,
-  YStack,
   Accordion,
   Paragraph,
   Square,
@@ -9,13 +7,11 @@ import {
   Spinner,
 } from "tamagui";
 import { ChevronDown } from "@tamagui/lucide-icons";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Jokes } from "../utils/type";
 import { FlatList } from "react-native";
 
 type HomeScreenProps = {
-  jokes: Record<string, Jokes[]>;
   jokesCategory: string[];
   handleFetchMoreJokes: (category: string) => void;
   isFetchingJokesCategory: boolean;
@@ -23,14 +19,11 @@ type HomeScreenProps = {
 };
 
 const HomeScreen = ({
-  jokes,
   jokesCategory,
   isFetchingJokesCategory,
   getJokesByCategory,
   handleFetchMoreJokes,
 }: HomeScreenProps) => {
-  const { bottom, top } = useSafeAreaInsets();
-
   return (
     <FlatList
       data={jokesCategory}
