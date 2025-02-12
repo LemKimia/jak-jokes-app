@@ -9,20 +9,22 @@ import {
 import { ChevronDown } from "@tamagui/lucide-icons";
 
 import { Jokes } from "../utils/type";
-import { FlatList } from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 
 type HomeScreenProps = {
   jokesCategory: string[];
+  isScreenLoading: boolean;
+  handleRefresh: () => void;
   handleFetchMoreJokes: (category: string) => void;
-  isFetchingJokesCategory: boolean;
   getJokesByCategory: (category: string) => Jokes[];
 };
 
 const HomeScreen = ({
   jokesCategory,
-  isFetchingJokesCategory,
+  isScreenLoading,
   getJokesByCategory,
   handleFetchMoreJokes,
+  handleRefresh,
 }: HomeScreenProps) => {
   return (
     <FlatList
@@ -35,12 +37,15 @@ const HomeScreen = ({
         paddingBottom: 30,
         paddingTop: 10,
       }}
-      // refreshControl={
-      //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      // }
+      refreshControl={
+        <RefreshControl
+          refreshing={isScreenLoading}
+          onRefresh={handleRefresh}
+        />
+      }
       ListEmptyComponent={
-        isFetchingJokesCategory ? (
-          <Spinner size="large" />
+        isScreenLoading ? (
+          <Text>Loading ...</Text>
         ) : (
           <Text>No joke categories available.</Text>
         )

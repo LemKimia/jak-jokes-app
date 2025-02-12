@@ -5,6 +5,7 @@ import { Jokes } from "../utils/type";
 import api from "../utils/api";
 
 const Index = () => {
+  const [refreshing, setRefreshing] = useState(false);
   const [jokes, setJokes] = useState<Record<string, Jokes[]>>({});
 
   const { isFetchingJokesCategory, jokesCategory } =
@@ -15,6 +16,8 @@ const Index = () => {
 
   const { allJokesData, isLoading } =
     apiQuery.fetchAllJokes(cleanJokesCategory);
+
+  const isScreenLoading = isLoading || isFetchingJokesCategory || refreshing;
 
   const memoizedJokesCategory = useMemo(
     () => cleanJokesCategory,
@@ -86,12 +89,22 @@ const Index = () => {
     return jokes[category] || [];
   };
 
+  const handleRefresh = () => {
+    setRefreshing(true);
+    setJokes({});
+
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  };
+
   return (
     <HomeScreen
-      isFetchingJokesCategory={isFetchingJokesCategory || isLoading}
+      isScreenLoading={isScreenLoading}
       getJokesByCategory={getJokesByCategory}
       jokesCategory={memoizedJokesCategory}
       handleFetchMoreJokes={handleFetchMoreJokes}
+      handleRefresh={handleRefresh}
     />
   );
 };
